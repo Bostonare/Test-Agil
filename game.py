@@ -8,7 +8,7 @@ screen_height = 600
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("Catch The Fruits")
 
-#color
+#color hoppsan hejsan
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
