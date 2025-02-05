@@ -79,7 +79,7 @@ def game_loop():
             
         fruit_y += fruit_speed
     
-        #  check if the fruit is caught
+        #  check if the fruit is Tjena
         if fruit_y + fruit_height > basket_y and basket_x < fruit_x + fruit_width < basket_x + basket_width:
             score += 1
             fruit_x = random.randint(0, screen_width - fruit_width)
