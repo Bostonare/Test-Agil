@@ -1,18 +1,21 @@
 import pygame
 import random
 
+# Initialize game
 pygame.init()
 
+# Set up the Screen
 screen_width = 800
 screen_height = 600
 screen = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption("Catch The Fruits")
 
-#color hoppsan hejsan
+#color
 WHITE = (255,255,255)
 BLACK = (0,0,0)
 RED = (255,0,0)
 
+# Game variables
 basket_width = 100
 basket_height = 50
 basket_x = screen_width // 2 - basket_width // 2
@@ -67,7 +70,8 @@ def game_loop():
              basket_x -= basket_speed
         if keys[pygame.K_RIGHT]:
              basket_x += basket_speed
-             
+        
+        # keep the basket within the screen bounds
         if basket_x < 0:
             basket_x = 0
         elif basket_x > screen_width - basket_width:
@@ -75,7 +79,7 @@ def game_loop():
             
         fruit_y += fruit_speed
     
-
+        #  check if the fruit is caught
         if fruit_y + fruit_height > basket_y and basket_x < fruit_x + fruit_width < basket_x + basket_width:
             score += 1
             fruit_x = random.randint(0, screen_width - fruit_width)
@@ -85,6 +89,7 @@ def game_loop():
         draw_fruits(fruit_x, fruit_y)
         display_score(score)
         
+        # Game over if the fruit reaches the bottom
         if fruit_y > screen_height:
             game_over()
         
