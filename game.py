@@ -40,7 +40,20 @@ def display_score(score):
     font = pygame.font.SysFont(None, 36)
     text = font.render("Score: " + str(score), True, BLACK)
     screen.blit(text, (10,10))
-    
+
+def draw_start_button():
+    button_width = 200
+    button_height = 50
+    button_x = screen_width // 2 - button_width // 2
+    button_y = screen_height // 2 - button_height // 2
+
+    pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
+    font = pygame.font.SysFont(None, 48)
+    text = font.render("Start Game", True, WHITE)
+    text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
+    screen.blit(text, text_rect)
+    return pygame.Rect(button_x, button_y, button_width, button_height)    
+
 def game_over():
     font = pygame.font.SysFont(None, 72)
     text = font.render("Game over", True, BLACK)
@@ -97,4 +110,3 @@ def game_loop():
         clock.tick(60)
 
 game_loop()
-# hej
