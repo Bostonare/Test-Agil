@@ -44,15 +44,76 @@ def display_score(score):
 def draw_start_button():
     button_width = 200
     button_height = 50
-    button_x = screen_width // 2 - button_width // 2
+    spacing = 20
+    
+    total_width = button_width * 2 + spacing
+    
+    start_x = screen_width // 2 - total_width // 2
+    group_start_x = screen_width // 2 - total_width // 2
+    button_y = screen_height // 2 - button_height // 2
+
+    pygame.draw.rect(screen, BLACK, [group_start_x, button_y, button_width, button_height])
+    font = pygame.font.SysFont(None, 48)
+    text = font.render("Start Game", True, WHITE)
+    text_rect = text.get_rect(center=(group_start_x + button_width // 2, button_y + button_height // 2))
+    screen.blit(text, text_rect)
+    return pygame.Rect(start_x, button_y, button_width, button_height)
+
+    # Help Button
+def draw_help_button():
+    button_width = 200
+    button_height = 50
+    spacing = 20 
+
+    total_width = button_width * 2 + spacing
+
+    group_start_x = screen_width // 2 - total_width // 2
+
+    button_x = group_start_x + button_width + spacing
     button_y = screen_height // 2 - button_height // 2
 
     pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
     font = pygame.font.SysFont(None, 48)
-    text = font.render("Start Game", True, WHITE)
-    text_rect = text.get_rect(center=(screen_width // 2, screen_height // 2))
+    text = font.render("Help", True, WHITE)
+    text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)    
+
+    # Help Screen
+def help_screen():
+    help_waiting = True
+    help_text = [
+            "Help Page:",
+        "",
+        "Use the arrow keys LEFT and RIGHT to move the basket.",
+        "",
+        "Collect as many items as you can.",
+        "",
+        "Click anywhere or press ESC to return."
+    ]
+    font = pygame.font.SysFont(None, 32)
+    start_y = 100
+    line_spacing = 50
+    
+    while help_waiting:
+        screen.fill(WHITE)
+        for i, line in enumerate(help_text):
+            text_surface = font.render(line, True, BLACK)
+            text_rect = text_surface.get_rect(center=(screen_width // 2, start_y + i * line_spacing))
+            screen.blit(text_surface, text_rect)
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                help_waiting = False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                help_waiting = False
+                
+        pygame.display.update()
+        clock.tick(60)
+        
 
 def game_over():
     font = pygame.font.SysFont(None, 72)
@@ -114,7 +175,8 @@ def main():
     waiting = True
     while waiting:
         screen.fill(WHITE)
-        button_rect = draw_start_button()
+        start_rect = draw_start_button()
+        help_rect = draw_help_button()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -122,9 +184,12 @@ def main():
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
-                if button_rect.collidepoint(mouse_pos):
+                if start_rect.collidepoint(mouse_pos):
                     waiting = False
                     game_loop()
+                elif help_rect.collidepoint(mouse_pos):
+                    help_screen()
+                    
 
         pygame.display.update()
         clock.tick(60)
