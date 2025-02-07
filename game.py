@@ -78,7 +78,7 @@ def draw_help_button():
     text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)    
-
+  
     # Help Screen
 def help_screen():
     help_waiting = True
@@ -114,6 +114,24 @@ def help_screen():
         pygame.display.update()
         clock.tick(60)
         
+def draw_exit_button():
+    button_width = 200
+    button_height = 50
+    spacing = 20 
+
+    total_width = button_width * 2 + spacing
+
+    group_start_x = screen_width // 2 - total_width // 2
+
+    button_x = group_start_x + button_width + spacing
+    button_y = screen_height // 2 - button_height // 2
+
+    pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
+    font = pygame.font.SysFont(None,48)
+    text = font.render("Exit Game", True, WHITE)
+    text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
+    screen.blit(text, text_rect)
+    return pygame.Rect(button_x, button_y, button_width, button_height)
 
 def game_over():
     font = pygame.font.SysFont(None, 72)
@@ -175,8 +193,9 @@ def main():
     waiting = True
     while waiting:
         screen.fill(WHITE)
-        start_rect = draw_start_button()
-        help_rect = draw_help_button()
+        start_button_rect = draw_start_button()
+        help_button_rect = draw_help_button()
+        exit_button_rect = draw_exit_button()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -184,12 +203,15 @@ def main():
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
-                if start_rect.collidepoint(mouse_pos):
+
+                if start_button_rect.collidepoint(mouse_pos):
                     waiting = False
                     game_loop()
-                elif help_rect.collidepoint(mouse_pos):
+                if help_rect.collidepoint(mouse_pos):
                     help_screen()
-                    
+                if exit_button_rect.collidepoint(mouse_pos):
+                    pygame.quit()
+                    quit()
 
         pygame.display.update()
         clock.tick(60)
