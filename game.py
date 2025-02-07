@@ -109,4 +109,26 @@ def game_loop():
         pygame.display.update()
         clock.tick(60)
 
-game_loop()
+
+def main():
+    waiting = True
+    while waiting:
+        screen.fill(WHITE)
+        button_rect = draw_start_button()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = event.pos
+                if button_rect.collidepoint(mouse_pos):
+                    waiting = False
+                    game_loop()
+
+        pygame.display.update()
+        clock.tick(60)
+
+
+main()
+
