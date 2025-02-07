@@ -46,7 +46,7 @@ def draw_start_button():
     button_height = 50
     spacing = 20
     
-    total_width = button_width * 2 + spacing
+    total_width = button_width * 3 + spacing * 2
     
     start_x = screen_width // 2 - total_width // 2
     group_start_x = screen_width // 2 - total_width // 2
@@ -65,12 +65,13 @@ def draw_help_button():
     button_height = 50
     spacing = 20 
 
-    total_width = button_width * 2 + spacing
+    total_width = button_width * 3 + spacing * 2
 
     group_start_x = screen_width // 2 - total_width // 2
 
     button_x = group_start_x + button_width + spacing
     button_y = screen_height // 2 - button_height // 2
+    
 
     pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
     font = pygame.font.SysFont(None, 48)
@@ -119,12 +120,13 @@ def draw_exit_button():
     button_height = 50
     spacing = 20 
 
-    total_width = button_width * 2 + spacing
+    total_width = button_width * 3 + spacing * 2
 
     group_start_x = screen_width // 2 - total_width // 2
 
     button_x = group_start_x + button_width + spacing
     button_y = screen_height // 2 - button_height // 2
+    button_x = group_start_x + (button_width + spacing) * 2
 
     pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
     font = pygame.font.SysFont(None,48)
@@ -207,7 +209,7 @@ def main():
                 if start_button_rect.collidepoint(mouse_pos):
                     waiting = False
                     game_loop()
-                if help_rect.collidepoint(mouse_pos):
+                if help_button_rect.collidepoint(mouse_pos):
                     help_screen()
                 if exit_button_rect.collidepoint(mouse_pos):
                     pygame.quit()
