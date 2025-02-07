@@ -54,6 +54,19 @@ def draw_start_button():
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)    
 
+def draw_exit_button():
+    button_width = 200
+    button_height = 50
+    button_x = (screen_width - button_width) // 2
+    button_y = screen_height// 2 + 75
+    
+    pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
+    font = pygame.font.SysFont(None,48)
+    text = font.render("Exit Game", True, WHITE)
+    text_rect = text.get_rect(center=(screen_width // 2, button_y + button_height // 2))  # Correct text positioning
+    screen.blit(text, text_rect)
+    return pygame.Rect(button_x, button_y, button_width, button_height)
+
 def game_over():
     font = pygame.font.SysFont(None, 72)
     text = font.render("Game over", True, BLACK)
@@ -114,7 +127,8 @@ def main():
     waiting = True
     while waiting:
         screen.fill(WHITE)
-        button_rect = draw_start_button()
+        start_button_rect = draw_start_button()
+        exit_button_rect = draw_exit_button()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -122,9 +136,12 @@ def main():
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = event.pos
-                if button_rect.collidepoint(mouse_pos):
+                if start_button_rect.collidepoint(mouse_pos):
                     waiting = False
                     game_loop()
+                if exit_button_rect.collidepoint(mouse_pos):
+                    pygame.quit()
+                    quit()
 
         pygame.display.update()
         clock.tick(60)
