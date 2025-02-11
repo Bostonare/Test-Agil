@@ -1,5 +1,6 @@
 import pygame
 import random
+import os
 
 # Initialize game
 pygame.init()
@@ -22,13 +23,31 @@ basket_x = screen_width // 2 - basket_width // 2
 basket_y = screen_height - basket_height - 20
 basket_speed = 10
 
-# Load the basket image
-basket_image = pygame.image.load("basket.png")  
-basket_image = pygame.transform.scale(basket_image, (basket_width, basket_height))
-
 fruit_width = 50
 fruit_height = 50
 fruit_speed = 5
+
+# Load the basket image
+basket_image = pygame.image.load("Assets/basket.png")  
+basket_image = pygame.transform.scale(basket_image, (basket_width, basket_height))
+
+# Load the fruits
+fruit_files = [
+    "watermelon.png",
+    "strawberry.png",
+    "lemon.png",
+    "grapes.png",
+    "cherries.png",
+    "bananas.png",
+    "apple.png"
+]
+fruit_images = []
+for file in fruit_files:
+    path = os.path.join("Assets", file)
+    img = pygame.image.load(path)
+    img = pygame.transform.scale(img, (fruit_width, fruit_height))
+    fruit_images.append(img)
+
 
 score = 0
 
@@ -37,10 +56,7 @@ clock = pygame.time.Clock()
 def draw_basket(x, y):
     # Draw the basket image
     screen.blit(basket_image, (x, y))
-
-def draw_fruits(x,y):
-    pygame.draw.ellipse(screen, RED, [x,y,fruit_width, fruit_height])
-
+    
 def display_score(score):
     font = pygame.font.SysFont(None, 36)
     text = font.render("Score: " + str(score), True, BLACK)
@@ -216,6 +232,7 @@ def game_loop():
     
     fruit_x = random.randint(0, screen_width - fruit_width)
     fruit_y = -fruit_height
+    fruit_img = random.choice(fruit_images)
     
     running = True
     while running:
@@ -244,9 +261,10 @@ def game_loop():
             score += 1
             fruit_x = random.randint(0, screen_width - fruit_width)
             fruit_y = -fruit_height
+            fruit_img = random.choice(fruit_images)
         
         draw_basket(basket_x, basket_y)
-        draw_fruits(fruit_x, fruit_y)
+        screen.blit(fruit_img, (fruit_x, fruit_y))
         display_score(score)
         
         # Game over if the fruit reaches the bottom
