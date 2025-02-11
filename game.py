@@ -22,6 +22,10 @@ basket_x = screen_width // 2 - basket_width // 2
 basket_y = screen_height - basket_height - 20
 basket_speed = 10
 
+# Load the basket image
+basket_image = pygame.image.load("basket.png")  
+basket_image = pygame.transform.scale(basket_image, (basket_width, basket_height))
+
 fruit_width = 50
 fruit_height = 50
 fruit_speed = 5
@@ -30,8 +34,9 @@ score = 0
 
 clock = pygame.time.Clock()
 
-def draw_basket(x,y):
-    pygame.draw.rect(screen, BLACK, [x,y,basket_width, basket_height])
+def draw_basket(x, y):
+    # Draw the basket image
+    screen.blit(basket_image, (x, y))
 
 def draw_fruits(x,y):
     pygame.draw.ellipse(screen, RED, [x,y,fruit_width, fruit_height])
