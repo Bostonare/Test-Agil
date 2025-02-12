@@ -27,6 +27,10 @@ fruit_width = 50
 fruit_height = 50
 fruit_speed = 5
 
+# Load the background image
+background_image = pygame.image.load("Background.png")
+background_image = pygame.transform.scale(background_image, (screen_width, screen_height))
+
 # Load the basket image
 basket_image = pygame.image.load("Assets/basket.png")  
 basket_image = pygame.transform.scale(basket_image, (basket_width, basket_height))
@@ -73,13 +77,13 @@ def draw_start_button():
     group_start_x = screen_width // 2 - total_width // 2
     button_y = screen_height // 2 - button_height // 2
 
-    pygame.draw.rect(screen, BLACK, [group_start_x, button_y, button_width, button_height])
+    pygame.draw.rect(screen, (0, 255, 0), [group_start_x, button_y, button_width, button_height])  # Green
     font = pygame.font.SysFont(None, 48)
-    text = font.render("Start Game", True, WHITE)
+    text = font.render("Start Game", True, BLACK)
     text_rect = text.get_rect(center=(group_start_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
     return pygame.Rect(start_x, button_y, button_width, button_height)
-
+   
     # Help Button
 def draw_help_button():
     button_width = 200
@@ -94,9 +98,9 @@ def draw_help_button():
     button_y = screen_height // 2 - button_height // 2
     
 
-    pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
+    pygame.draw.rect(screen, (0, 0, 255), [button_x, button_y, button_width, button_height])  # Blue
     font = pygame.font.SysFont(None, 48)
-    text = font.render("Help", True, WHITE)
+    text = font.render("Help", True, BLACK)
     text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)    
@@ -145,13 +149,13 @@ def draw_exit_button():
 
     group_start_x = screen_width // 2 - total_width // 2
 
-    button_x = group_start_x + button_width + spacing
+    
     button_y = screen_height // 2 - button_height // 2
     button_x = group_start_x + (button_width + spacing) * 2
 
-    pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
-    font = pygame.font.SysFont(None,48)
-    text = font.render("Exit Game", True, WHITE)
+    pygame.draw.rect(screen, (255, 0, 0), [button_x, button_y, button_width, button_height])  # Red
+    font = pygame.font.SysFont(None, 48)
+    text = font.render("Exit Game", True, BLACK)
     text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)
@@ -207,7 +211,7 @@ def game_loop():
     
     running = True
     while running:
-        screen.fill(WHITE)
+        screen.blit(background_image, (0, 0))
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -227,7 +231,7 @@ def game_loop():
             
         fruit_y += fruit_speed
     
-        #  check if the fruit is Tjena
+        # check if the fruit collides with the basket
         if fruit_y + fruit_height > basket_y and basket_x < fruit_x + fruit_width < basket_x + basket_width:
             score += 1
             fruit_x = random.randint(0, screen_width - fruit_width)
@@ -249,7 +253,13 @@ def game_loop():
 def main():
     waiting = True
     while waiting:
-        screen.fill(WHITE)
+        screen.blit(background_image, (0, 0))
+
+        font = pygame.font.SysFont(None, 48, bold=True)
+        welcome_text = font.render("Welcome to the Catch The Fruits Game", True, BLACK)
+        welcome_rect = welcome_text.get_rect(center=(screen_width // 2, screen_height // 2 - 100))
+        screen.blit(welcome_text, welcome_rect)
+
         start_button_rect = draw_start_button()
         help_button_rect = draw_help_button()
         exit_button_rect = draw_exit_button()
