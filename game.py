@@ -168,35 +168,6 @@ def draw_restart_button():
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)
 
-
-def game_over():
-    # Display the "Game over" message
-    font = pygame.font.SysFont(None, 72)
-    text = font.render("Game over", True, BLACK)
-    screen.blit(text, (screen_width // 2 - text.get_width() // 2, screen_height // 2 - 100))
-    
-    # Draw the restart button
-    restart_button_rect = draw_restart_button()
-    pygame.display.update()
-    
-    # Wait for the player to click the restart button
-    waiting = True
-    while waiting:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                quit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if restart_button_rect.collidepoint(event.pos):
-                    waiting = False
-                    # Reset any necessary game variables 
-                    global score, basket_x
-                    score = 0
-                    basket_x = screen_width // 2 - basket_width // 2
-                    # Restart the game loop
-                    game_loop()
-        clock.tick(60)
-
 def game_over():
     # Display the "Game over" message
     font = pygame.font.SysFont(None, 72)
