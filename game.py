@@ -1,6 +1,7 @@
 import pygame
 import random
 import os
+import time
 
 # Initialize game
 pygame.init()
@@ -34,6 +35,10 @@ background_image = pygame.transform.scale(background_image, (screen_width, scree
 # Load the basket image
 basket_image = pygame.image.load("Assets/basket.png")  
 basket_image = pygame.transform.scale(basket_image, (basket_width, basket_height))
+
+# Load the splatter image
+splatter_image = pygame.image.load("Splatter.png")
+splatter_image = pygame.transform.scale(splatter_image, (fruit_width, fruit_height))
 
 # Load the fruits
 fruit_files = [
@@ -204,54 +209,73 @@ def game_over():
 def game_loop():
     global score
     global basket_x
-    
+
     fruit_x = random.randint(0, screen_width - fruit_width)
     fruit_y = -fruit_height
     fruit_img = random.choice(fruit_images)
-    
+    splatter_positions = []  # List to store splatter positions
+    missed_fruits = 0  # Counter for missed fruits
+
     running = True
     while running:
         screen.blit(background_image, (0, 0))
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
              basket_x -= basket_speed
         if keys[pygame.K_RIGHT]:
              basket_x += basket_speed
-        
+
         # keep the basket within the screen bounds
         if basket_x < 0:
             basket_x = 0
         elif basket_x > screen_width - basket_width:
             basket_x = screen_width - basket_width
-            
+
         fruit_y += fruit_speed
-    
+
         # check if the fruit collides with the basket
         if fruit_y + fruit_height > basket_y and basket_x < fruit_x + fruit_width < basket_x + basket_width:
             score += 1
             fruit_x = random.randint(0, screen_width - fruit_width)
             fruit_y = -fruit_height
             fruit_img = random.choice(fruit_images)
-        
+
+        # Check if the fruit is missed
+        if fruit_y > screen_height:
+            splatter_positions.append((fruit_x, screen_height - fruit_height, time.time()))  # Add timestamp
+            fruit_x = random.randint(0, screen_width - fruit_width)
+            fruit_y = -fruit_height
+            fruit_img = random.choice(fruit_images)
+            missed_fruits += 1  # Increment missed fruits counter
+
         draw_basket(basket_x, basket_y)
         screen.blit(fruit_img, (fruit_x, fruit_y))
         display_score(score)
-        
-        # Game over if the fruit reaches the bottom
-        if fruit_y > screen_height:
+
+        # Draw splatters and remove old ones
+        current_time = time.time()
+        splatter_positions = [
+            (x, y, t) for (x, y, t) in splatter_positions if current_time - t < 0.5
+        ]
+
+        for x, y, _ in splatter_positions:
+            screen.blit(splatter_image, (x, y))
+
+        # End game if two fruits are missed
+        if missed_fruits >= 3:
             game_over()
-        
+            running = False
+
         pygame.display.update()
         clock.tick(60)
 
-
-def main():
-    waiting = True
+def main(): 
+    waiting = True      
     while waiting:
         screen.blit(background_image, (0, 0))
 
