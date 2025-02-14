@@ -67,8 +67,12 @@ def draw_basket(x, y):
     screen.blit(basket_image, (x, y))
     
 def display_score(score):
-    font = pygame.font.SysFont(None, 36)
-    text = font.render("Score: " + str(score), True, BLACK)
+     # Dimensions and position of the scoreboard
+    scoreboard_rect = pygame.Rect(5, 5, 100, 50)
+    pygame.draw.rect(screen, (181, 136, 99), scoreboard_rect)
+    pygame.draw.rect(screen, WHITE, scoreboard_rect, 2)
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 36)
+    text = font.render( str(score), True, WHITE)
     screen.blit(text, (10,10))
 
 def draw_start_button():
@@ -82,8 +86,8 @@ def draw_start_button():
     group_start_x = screen_width // 2 - total_width // 2
     button_y = screen_height // 2 - button_height // 2
 
-    pygame.draw.rect(screen, (0, 255, 0), [group_start_x, button_y, button_width, button_height])  # Green
-    font = pygame.font.SysFont(None, 48)
+    pygame.draw.rect(screen, (0, 200, 0), [group_start_x, button_y, button_width, button_height])  # Green
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 20)
     text = font.render("Start Game", True, BLACK)
     text_rect = text.get_rect(center=(group_start_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
@@ -103,8 +107,8 @@ def draw_help_button():
     button_y = screen_height // 2 - button_height // 2
     
 
-    pygame.draw.rect(screen, (0, 0, 255), [button_x, button_y, button_width, button_height])  # Blue
-    font = pygame.font.SysFont(None, 48)
+    pygame.draw.rect(screen, (0, 100, 255), [button_x, button_y, button_width, button_height])  # Blue
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 20)
     text = font.render("Help", True, BLACK)
     text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
@@ -122,7 +126,7 @@ def help_screen():
         "",
         "Click anywhere or press ESC to return."
     ]
-    font = pygame.font.SysFont(None, 32)
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 13)
     start_y = 100
     line_spacing = 50
     
@@ -158,8 +162,8 @@ def draw_exit_button():
     button_y = screen_height // 2 - button_height // 2
     button_x = group_start_x + (button_width + spacing) * 2
 
-    pygame.draw.rect(screen, (255, 0, 0), [button_x, button_y, button_width, button_height])  # Red
-    font = pygame.font.SysFont(None, 48)
+    pygame.draw.rect(screen, (200, 0, 0), [button_x, button_y, button_width, button_height])  # Red
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 20)
     text = font.render("Exit Game", True, BLACK)
     text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
@@ -170,8 +174,8 @@ def draw_restart_button():
     button_height = 50
     button_x = screen_width // 2 - button_width // 2
     button_y = screen_height // 2 + 75  
-    pygame.draw.rect(screen, BLACK, [button_x, button_y, button_width, button_height])
-    font = pygame.font.SysFont(None, 48)
+    pygame.draw.rect(screen, (255, 165, 0), [button_x, button_y, button_width, button_height])
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 20)
     text = font.render("Restart Game", True, WHITE)
     text_rect = text.get_rect(center=(screen_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
@@ -179,7 +183,7 @@ def draw_restart_button():
 
 def game_over():
     # Display the "Game over" message
-    font = pygame.font.SysFont(None, 72)
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 30)
     text = font.render("Game over", True, BLACK)
     screen.blit(text, (screen_width // 2 - text.get_width() // 2, screen_height // 2 - 100))
     
@@ -279,7 +283,7 @@ def main():
     while waiting:
         screen.blit(background_image, (0, 0))
 
-        font = pygame.font.SysFont(None, 48, bold=True)
+        font = pygame.font.Font("PressStart2P-Regular.ttf", 20)
         welcome_text = font.render("Welcome to the Catch The Fruits Game", True, BLACK)
         welcome_rect = welcome_text.get_rect(center=(screen_width // 2, screen_height // 2 - 100))
         screen.blit(welcome_text, welcome_rect)
