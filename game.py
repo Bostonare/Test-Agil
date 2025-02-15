@@ -74,6 +74,12 @@ clock = pygame.time.Clock()
 def draw_basket(x, y):
     # Draw the basket image
     screen.blit(basket_image, (x, y))
+
+def display_fruit_points(x, y, fruit_img):
+    points = fruit_points[fruit_files[fruit_images.index(fruit_img)]]
+    font = pygame.font.SysFont(None, 24)
+    text = font.render(f"+{points}", True, BLACK)
+    screen.blit(text, (x + fruit_width + 5, y))
     
 def display_score(score):
     font = pygame.font.SysFont(None, 36)
@@ -302,6 +308,7 @@ def game_loop():
 
         draw_basket(basket_x, basket_y)
         screen.blit(fruit_img, (fruit_x, fruit_y))
+        display_fruit_points(fruit_x, fruit_y, fruit_img)
         display_score(score)
 
         # Draw splatters and remove old ones
