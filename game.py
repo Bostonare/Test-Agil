@@ -68,6 +68,7 @@ fruit_points = {
 }
 
 score = 0
+high_score = 0
 
 clock = pygame.time.Clock()
 
@@ -99,6 +100,20 @@ def display_score(score):
     # Position "Score:" and the number with more spacing
     screen.blit(label, (10, 100))  # "Score:" at (10, 100)
     screen.blit(number, (120, 100))  # Number moved further to the right
+
+def display_high_score(high_score):
+    label_font = pygame.font.Font("PressStart2P-Regular.ttf", 16)
+    score_font = pygame.font.Font("PressStart2P-Regular.ttf", 16)
+
+    label = label_font.render("Highest Score:", True, BLACK)
+    number = score_font.render(str(high_score), True, BLACK)
+
+    # Calculate the width of the label to properly position the number
+    label_width = label.get_width()
+
+    # Position "Highest Score:" and the number below the current score
+    screen.blit(label, (10, 150))
+    screen.blit(number, (10 + label_width + 20, 150))  # 20 pixels spacing between label and number
 
 def draw_start_button():
     button_width = 200
@@ -237,6 +252,7 @@ def toggle_pause():
 # --- END PAUSE BUTTON CODE ---
 
 def game_over():
+    global high_score
     # Display the "Game over" message
     font = pygame.font.Font("PressStart2P-Regular.ttf", 30)
     text = font.render("Game over", True, BLACK)
@@ -268,6 +284,7 @@ def game_over():
 def game_loop():
     global score
     global basket_x
+    global high_score
 
     fruit_x = random.randint(0, screen_width - fruit_width)
     fruit_y = -fruit_height
@@ -308,6 +325,8 @@ def game_loop():
         # check if the fruit collides with the basket
         if fruit_y + fruit_height > basket_y and basket_x < fruit_x + fruit_width < basket_x + basket_width:
             score += fruit_points[fruit_files[fruit_images.index(fruit_img)]]
+            if score > high_score:  
+             high_score = score
             fruit_x = random.randint(0, screen_width - fruit_width)
             fruit_y = -fruit_height
             fruit_img = random.choice(fruit_images)
@@ -324,6 +343,7 @@ def game_loop():
         screen.blit(fruit_img, (fruit_x, fruit_y))
         display_fruit_points(fruit_x, fruit_y, fruit_img)
         display_score(score)
+        display_high_score(high_score)
 
         # Draw splatters and remove old ones
         current_time = time.time()
