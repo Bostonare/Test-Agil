@@ -79,16 +79,26 @@ def display_fruit_points(x, y, fruit_img):
     points = fruit_points[fruit_files[fruit_images.index(fruit_img)]]
     font = pygame.font.SysFont(None, 24)
     text = font.render(f"+{points}", True, BLACK)
-    screen.blit(text, (x + fruit_width + 5, y))
+
+    # Adjust x position if too close to right edge
+    text_x = min(x + fruit_width + 5, screen_width - text.get_width() - 5)
+    # If fruit is near right edge, show points on left side
+    if x > screen_width - fruit_width - 30:
+        text_x = x - text.get_width() - 5
+
+    screen.blit(text, (text_x, y))
     
 def display_score(score):
-     # Dimensions and position of the scoreboard
-    scoreboard_rect = pygame.Rect(5, 5, 100, 50)
-    pygame.draw.rect(screen, (181, 136, 99), scoreboard_rect)
-    pygame.draw.rect(screen, WHITE, scoreboard_rect, 2)
-    font = pygame.font.Font("PressStart2P-Regular.ttf", 36)
-    text = font.render( str(score), True, WHITE)
-    screen.blit(text, (10,10))
+    # Both "Score:" and number in smaller font
+    label_font = pygame.font.Font("PressStart2P-Regular.ttf", 16)
+    score_font = pygame.font.Font("PressStart2P-Regular.ttf", 16)
+
+    label = label_font.render("Score:", True, BLACK)
+    number = score_font.render(str(score), True, BLACK)
+
+    # Position "Score:" and the number with more spacing
+    screen.blit(label, (10, 100))  # "Score:" at (10, 100)
+    screen.blit(number, (120, 100))  # Number moved further to the right
 
 def draw_start_button():
     button_width = 200
