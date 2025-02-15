@@ -186,6 +186,36 @@ def draw_restart_button():
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)
 
+paused = False
+
+def draw_pause_button():
+    # Set button dimensions and position (top-right corner)
+    button_width = 100  # Increased size for usability
+    button_height = 50
+    button_x = screen_width - button_width - 10  # 10px padding from right edge
+    button_y = 10  # 10px padding from top edge
+    
+    # Create a Rect for collision detection
+    pause_rect = pygame.Rect(button_x, button_y, button_width, button_height)
+    
+    # Draw the button
+    pygame.draw.rect(screen, RED, pause_rect)
+    
+    # Display "Pause" when the game is running, and "Resume" when paused
+    font = pygame.font.Font(None, 30)
+    text_str = "Resume" if paused else "Pause"
+    text = font.render(text_str, True, BLACK)
+    text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
+    screen.blit(text, text_rect)
+    
+    return pause_rect
+
+def toggle_pause():
+    """Toggle the paused state of the game."""
+    global paused
+    paused = not paused
+# --- END PAUSE BUTTON CODE ---
+
 def game_over():
     # Display the "Game over" message
     font = pygame.font.SysFont(None, 72)
@@ -229,23 +259,31 @@ def game_loop():
     while running:
         screen.blit(background_image, (0, 0))
 
+         #Always draw the pause button and get its Rect for click detection
+        pause_button_rect = draw_pause_button()
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.quit()
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pause_button_rect.collidepoint(event.pos):
+                    toggle_pause()
+        
+        if not paused:            
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT]:
+                basket_x -= basket_speed
+            if keys[pygame.K_RIGHT]:
+                basket_x += basket_speed
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-             basket_x -= basket_speed
-        if keys[pygame.K_RIGHT]:
-             basket_x += basket_speed
+            # keep the basket within the screen bounds
+            if basket_x < 0:
+                basket_x = 0
+            elif basket_x > screen_width - basket_width:
+                basket_x = screen_width - basket_width
 
-        # keep the basket within the screen bounds
-        if basket_x < 0:
-            basket_x = 0
-        elif basket_x > screen_width - basket_width:
-            basket_x = screen_width - basket_width
-
-        fruit_y += fruit_speed
+            fruit_y += fruit_speed
 
         # check if the fruit collides with the basket
         if fruit_y + fruit_height > basket_y and basket_x < fruit_x + fruit_width < basket_x + basket_width:
