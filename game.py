@@ -57,6 +57,15 @@ for file in fruit_files:
     img = pygame.transform.scale(img, (fruit_width, fruit_height))
     fruit_images.append(img)
 
+fruit_points = {
+    "watermelon.png": 5,
+    "strawberry.png": 3,
+    "lemon.png": 2,
+    "grapes.png": 4,
+    "cherries.png": 1,
+    "bananas.png": 3,
+    "apple.png": 6
+}
 
 score = 0
 
@@ -240,7 +249,7 @@ def game_loop():
 
         # check if the fruit collides with the basket
         if fruit_y + fruit_height > basket_y and basket_x < fruit_x + fruit_width < basket_x + basket_width:
-            score += 1
+            score += fruit_points[fruit_files[fruit_images.index(fruit_img)]]
             fruit_x = random.randint(0, screen_width - fruit_width)
             fruit_y = -fruit_height
             fruit_img = random.choice(fruit_images)
