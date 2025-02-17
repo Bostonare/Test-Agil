@@ -251,6 +251,22 @@ def toggle_pause():
     paused = not paused
 # --- END PAUSE BUTTON CODE ---
 
+def return_to_menu_button():
+    button_width = 250
+    button_height = 50
+    spacing = 20
+    total_width = button_width * 3 + spacing * 2
+    group_start_x = screen_width // 2 - total_width // 2
+
+    button_x = group_start_x + button_width + spacing
+    button_y = screen_height // 2 - button_height // 2  
+    pygame.draw.rect(screen, (255, 165, 0), [button_x, button_y, button_width, button_height])
+    font = pygame.font.Font("PressStart2P-Regular.ttf", 18)
+    text = font.render("Return To Menu", True, WHITE)
+    text_rect = text.get_rect(center=(screen_width // 2, button_y + button_height // 2))
+    screen.blit(text, text_rect)
+    return pygame.Rect(button_x, button_y, button_width, button_height)
+
 def game_over():
     global high_score
     # Display the "Game over" message
@@ -260,6 +276,7 @@ def game_over():
     
     # Draw the restart button
     restart_button_rect = draw_restart_button()
+    menu_button_rect = return_to_menu_button()
     pygame.display.update()
     
     # Wait for the player to click the restart button
@@ -278,6 +295,9 @@ def game_over():
                     basket_x = screen_width // 2 - basket_width // 2
                     # Restart the game loop
                     game_loop()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if menu_button_rect.collidepoint(event.pos):
+                    main()
         clock.tick(60)
 
     
