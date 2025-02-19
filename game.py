@@ -72,6 +72,7 @@ high_score = 0
 
 clock = pygame.time.Clock()
 
+# Draw the basket image
 def draw_basket(x, y):
     screen.blit(basket_image, (x, y))
 
@@ -80,10 +81,11 @@ def display_fruit_points(x, y, fruit_img):
     font = pygame.font.SysFont(None, 24)
     text = font.render(f"+{points}", True, BLACK)
     text_x = min(x + fruit_width + 5, screen_width - text.get_width() - 5)
-    if x > screen_width - fruit_width - 30:
-        text_x = x - text.get_width() - 5
+    if x > screen_width - fruit_width - 30: # If fruit is near right edge, show points on left side
+        text_x = x - text.get_width() - 5 # Adjust x position if too close to right edge
     screen.blit(text, (text_x, y))
-    
+   
+   # Both "Score:" and number in smaller font   
 def display_score(score):
     label_font = pygame.font.Font("PressStart2P-Regular.ttf", 16)
     score_font = pygame.font.Font("PressStart2P-Regular.ttf", 16)
@@ -98,6 +100,8 @@ def display_high_score(high_score):
     label = label_font.render("Highest Score:", True, BLACK)
     number = score_font.render(str(high_score), True, BLACK)
     label_width = label.get_width()
+   # Position "Score:" and the number with more spacing
+
     screen.blit(label, (10, 150))
     screen.blit(number, (10 + label_width + 20, 150))
 
@@ -131,7 +135,8 @@ def draw_help_button():
     text_rect = text.get_rect(center=(button_x + button_width // 2, button_y + button_height // 2))
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)
-
+ 
+ # Help Button
 def help_screen():
     help_waiting = True
     help_text = [
@@ -178,6 +183,7 @@ def draw_exit_button():
     screen.blit(text, text_rect)
     return pygame.Rect(button_x, button_y, button_width, button_height)
 
+# Draw the restart button
 def draw_restart_button():
     button_width = 250
     button_height = 50
@@ -191,7 +197,7 @@ def draw_restart_button():
     return pygame.Rect(button_x, button_y, button_width, button_height)
 
 paused = False
-
+# Set button dimensions and position (top-right corner)
 def draw_pause_button():
     button_width = 100
     button_height = 50
